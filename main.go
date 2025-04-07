@@ -112,6 +112,9 @@ func DetermineReaderFromFlags() (io.Reader, error) {
 		}
 		return f, nil
 	}
+	if flag.NArg() > 1 {
+		return nil, fmt.Errorf("Incorrect usage of command, expected: jwt-introspect [options] <jwt>, see --help for more information")
+	}
 	if flag.NArg() > 0 {
 		return strings.NewReader(flag.Arg(0)), nil
 	}
