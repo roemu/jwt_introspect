@@ -23,15 +23,16 @@ type IntrospecResult struct {
 
 type IntrospecParseResult struct {
 	ExpiresAt UnixTime `json:"exp"`
-	IssuedAt UnixTime `json:"iat"`
+	IssuedAt  UnixTime `json:"iat"`
 	NotBefore UnixTime `json:"nbf"`
-	Subject string `json:"sid"`
-	Issuer string `json:"iss"`
+	Subject   string   `json:"sub"`
+	Issuer    string   `json:"iss"`
+	Audience  string   `json:"aud"`
 }
 
 func main() {
 	headerOutput := flag.Bool("header", false, "Standalone flag, if set, will only output header part of jwt")
-	parsedOutput := flag.Bool("parsed", false, "Standalone flag, if set, will output partially parsed jwt token with human readable values")
+	unparsedOutput := flag.Bool("unparsed", false, "Standalone flag, if set, will output raw jwt token without human readable values")
 	reader, err := DetermineReaderFromFlags()
 	if err != nil {
 		log.Fatalf("Error determining input source: %s\n", err)
@@ -41,27 +42,35 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if *parsedOutput {
-		out, err := json.Marshal(ParsePayload(res.Payload))
-		if err != nil {
-			log.Fatal("Unable to unmarshal parsed jwt token: ", err)
-		}
-		fmt.Print(string(out))
-		
+	if *unparsedOutput {
+		fmt.Print(res.Payload)
+
 	} else if *headerOutput {
 		fmt.Print(res.Header)
 	} else {
-		fmt.Print(res.Payload)
+		fmt.Print(ParsePayload(res.Payload))
 	}
 }
 
-func ParsePayload(s string) IntrospecParseResult {
-	var parsed IntrospecParseResult
-	err := json.Unmarshal([]byte(s), &parsed)
+func FloatTimestamp(i float64) string {
+	return time.Unix(int64(i), 0).String()
+}
+func ParsePayload(s string) string {
+	objmap := map[string]any{}
+	err := json.Unmarshal([]byte(s), &objmap)
 	if err != nil {
-		log.Fatal("Unable to parse jwt token into human readable format.")
+		log.Fatal(err)
 	}
-	return parsed
+
+	objmap["exp"] = FloatTimestamp(objmap["exp"].(float64))
+	objmap["iat"] = FloatTimestamp(objmap["iat"].(float64))
+	objmap["nbf"] = FloatTimestamp(objmap["nbf"].(float64))
+
+	res, err := json.Marshal(objmap)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return string(res)
 }
 
 func IntrospectFromReader(r io.Reader) (IntrospecResult, error) {
