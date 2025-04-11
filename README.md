@@ -1,15 +1,14 @@
 # Jwt Introspect
 
-`jwt-introspect` is a command-line utility written in Go that simplifies the process of introspecting JSON Web Tokens (JWTs). Designed with usability in mind, this tool is perfect for developers looking to integrate JWT introspection into their pipelines seamlessly.
+`jwt-introspect` is a command-line utility written in Go that simplifies the process of introspecting JSON Web Tokens (JWTs). 
+Designed with usability in mind, this tool is perfect for web developers that always have to look up some site to decode their JWTs
 
-Per default will parse expiry, issuedAt and notBefore claims and print in human readable format
 
 ## Features
 
-- [ ] **Pipeline Friendly**: Easily integrate `jwt-introspect` into your existing workflows and automation scripts.
 - [x] **Stdin Access**: Accepts JWTs from standard input, allowing for quick and efficient processing.
 - [x] **Clipboard Access**: Simplifies developer experience by enabling JWT introspection directly from the clipboard.
-- [x] **File Access**: Accepts file path were jwt token is stored
+- [x] **File Access**: Accepts file path were JWT is stored
 - [x] **Human readable timestamps**: Will print timestamps in human readable format unless `--unparsed` is set.
 
 ## Installation
@@ -35,7 +34,7 @@ make install
 ## Usage
 
 ```bash
-jwt-introspect [options] <jwt>
+jwt-introspect [options] <JWT>
 ```
 
 ### Options
@@ -44,14 +43,14 @@ jwt-introspect [options] <jwt>
 - `--clipboard`: Introspects a JWT from the clipboard.
 - `--file=<path>`: Introspects a JWT from a file.
 - `--stdin`: Introspects a JWT from standard input.
-- `--unparsed`: Introspects a JWT and prints raw jwt token without human readable values.
+- `--unparsed`: Introspects a JWT and prints raw JWT without human readable values.
 
 ### Examples
 
 1. Introspect a JWT from standard input:
 
    ```bash
-   echo "your.jwt.token" | jwt-introspect --stdin
+   echo "your.jwt" | jwt-introspect --stdin
    ```
 
 2. Introspect a JWT from the clipboard:
