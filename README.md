@@ -16,7 +16,8 @@ Designed with usability in mind, this tool is perfect for web developers that al
 ### Homebrew
 
 ```bash
-brew install roemu/jwt_introspect/jwt-introspect
+brew tap roemu/jwt_introspect https://github.com/roemu/jwt_introspect
+brew install jwt-introspect
 ```
 
 ### From Source
