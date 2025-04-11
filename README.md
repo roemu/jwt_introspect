@@ -14,6 +14,12 @@ Per default will parse expiry, issuedAt and notBefore claims and print in human 
 
 ## Installation
 
+### Homebrew
+
+```bash
+brew install roemu/jwt_introspect/jwt-introspect
+```
+
 ### From Source
 
 To build `jwt-introspect` from source, ensure you have Go installed, then run:

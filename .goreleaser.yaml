@@ -8,12 +8,24 @@ before:
     - go mod tidy
 
 builds:
-  - env:
+  - binary: jwt-introspect
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
       - windows
       - darwin
+
+brews:
+  - name: jwt-introspect
+    directory: Formula
+    homepage: "https://github.com/roemu/jwt_introspect"
+    description: "Web-developer tooling to extract values from JWT tokens."
+    license: "GPL-3.0-or-later"
+    repository:
+      owner: roemu
+      name: jwt_introspect
+      branch: master
 
 archives:
   - formats: [tar.gz]
